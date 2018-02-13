@@ -21,7 +21,7 @@ typedef NS_ENUM(NSUInteger, LocationStatus) {
     LocationStatusError
 };
 
-typedef void (^ _Nullable LocationBlock)(LocationStatus status, CLLocationCoordinate2D location);
+typedef void (^LocationBlock)(LocationStatus status, CLLocationCoordinate2D location);
 
 
 
@@ -37,7 +37,7 @@ typedef void (^ _Nullable LocationBlock)(LocationStatus status, CLLocationCoordi
 /**
  * Main initializer.
  */
-+ (nonnull instancetype)locationWithBlock:(LocationBlock)callback;
++ (nonnull instancetype)locationWithBlock:(nullable LocationBlock)callback;
 
 /**
  * Stops the process.

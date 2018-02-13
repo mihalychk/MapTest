@@ -33,7 +33,7 @@
 #pragma mark - Static Methods
 
 + (instancetype)country {
-    __autoreleasing KMLCountry * country    = [[KMLCountry alloc] init];
+    __autoreleasing KMLCountry * country = [[self.class alloc] init];
 
     return country;
 }
@@ -43,7 +43,7 @@
 
 - (instancetype)init {
     if ((self = [super init]))
-        self.polygons           = [NSMutableArray array];
+        self.polygons = NSMutableArray.array;
 
     return self;
 }

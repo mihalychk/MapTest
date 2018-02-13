@@ -22,10 +22,10 @@
 #pragma mark - Static Methods
 
 + (nonnull instancetype)matchWithCountry:(nullable KMLCountry *)country andAccuracy:(KMLMatchAccuracy)accuracy {
-    __autoreleasing KMLMatch * match    = [[KMLMatch alloc] init];
+    __autoreleasing KMLMatch * match = [[self.class alloc] init];
 
-    match.country       = country;
-    match.accuracy      = accuracy;
+    match.country = country;
+    match.accuracy = accuracy;
 
     return match;
 }

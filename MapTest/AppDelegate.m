@@ -16,10 +16,10 @@
 
 
 
-@interface AppDelegate () {
-    __strong UIWindow * window;
-    __strong LoaderView * loaderView;
-}
+@interface AppDelegate ()
+
+@property (nonatomic, strong) UIWindow * aWindow;
+@property (nonatomic, strong) LoaderView * loaderView;
 
 @end
 
@@ -33,54 +33,54 @@
 
 - (void)loader:(BOOL)show animated:(BOOL)animated {
     if (show) {
-        if (!loaderView)
-            loaderView              = [[NSBundle mainBundle] loadNibNamed:@"LoaderView" owner:self options:nil].firstObject;
-        
+        if (!self.loaderView)
+            self.loaderView = [NSBundle.mainBundle loadNibNamed:@"LoaderView" owner:self options:nil].firstObject;
+
         if (animated)
-            loaderView.alpha        = 0.0f;
-        
-        [window addSubview:loaderView];
-        
-        loaderView.frame        = [UIScreen mainScreen].bounds;
-        
+            self.loaderView.alpha = 0.0f;
+
+        [self.aWindow addSubview:self.loaderView];
+
+        self.loaderView.frame = UIScreen.mainScreen.bounds;
+
         if (animated)
             [UIView animateWithDuration:0.25f animations:^{
-                loaderView.alpha        = 1.0f;
+                self.loaderView.alpha = 1.0f;
             }];
-        
+
         else
-            loaderView.alpha        = 1.0f;
+            self.loaderView.alpha = 1.0f;
     }
     else {
-        if (!loaderView)
+        if (!self.loaderView)
             return;
-        
+
         if (animated)
             [UIView animateWithDuration:0.125f animations:^{
-                loaderView.alpha        = 0.0f;
+                self.loaderView.alpha = 0.0f;
             } completion:^(BOOL finished) {
-                [loaderView removeFromSuperview];
+                [self.loaderView removeFromSuperview];
             }];
-        
+
         else
-            [loaderView removeFromSuperview];
+            [self.loaderView removeFromSuperview];
     }
 }
 
 
 - (void)setLoaderTitle:(nullable NSString *)title {
-    loaderView.title            = title;
+    self.loaderView.title = title;
 }
 
 
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    window                      = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    window.backgroundColor      = [UIColor whiteColor];
-    window.rootViewController   = [[UINavigationController alloc] initWithRootViewController:[[MainScreenViewController alloc] init]];
+    self.aWindow = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    self.aWindow.backgroundColor = UIColor.whiteColor;
+    self.aWindow.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[MainScreenViewController alloc] init]];
 
-    [window makeKeyAndVisible];
+    [self.aWindow makeKeyAndVisible];
 
     return YES;
 }

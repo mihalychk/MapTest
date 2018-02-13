@@ -22,10 +22,10 @@
 
 
 
-@interface KML () <KMLParserDelegate> {
-    __strong NSMutableArray<KMLCountry *> * countries;
-    __strong KMLParser * parser;
-}
+@interface KML () <KMLParserDelegate>
+
+@property (nonatomic, strong) NSArray<KMLCountry *> * countries;
+@property (nonatomic, strong) KMLParser * parser;
 
 @end
 
@@ -41,7 +41,7 @@
     if ((self = [super init])) {
         LOG(@"created");
     }
-    
+
     return self;
 }
 
@@ -49,8 +49,8 @@
 #pragma mark - Private Methods
 
 - (void)_storeData:(KMLCallback)callback {
-    LOG(@"storeData: %@", SBOOL([Storage saveObject:countries withKey:kKMLStorageDataKey]));
-    
+    LOG(@"storeData: %@", SBOOL([Storage saveObject:self.countries withKey:kKMLStorageDataKey]));
+
     IN_MAINTHREAD(^{
         LOG(@"loaded");
 
@@ -61,12 +61,12 @@
 
 
 - (void)_parseData:(KMLCallback)callback {
-    parser              = [[KMLParser alloc] initWithFileName:[[NSBundle mainBundle] pathForResource:@"world-stripped" ofType:@"kml"]];
-    parser.delegate     = self;
-    countries           = [NSMutableArray array];
+    self.parser = [[KMLParser alloc] initWithFileName:[NSBundle.mainBundle pathForResource:@"world-stripped" ofType:@"kml"]];
+    self.parser.delegate = self;
+    self.countries = NSArray.array;
 
-    if (![parser start]) {
-        NSError * error     = parser.lastError;
+    if (![self.parser start]) {
+        NSError * error = self.parser.lastError;
 
         IN_MAINTHREAD(^{
             if (callback)
@@ -76,21 +76,21 @@
     else
         [self _storeData:callback];
 
-    parser              = nil;
+    self.parser = nil;
 }
 
 
 - (void)_loadDataForced:(BOOL)forced callback:(KMLCallback)callback {
-    countries           = forced ? nil : [Storage loadObjectWithkey:kKMLStorageDataKey];
-    
-    if (VALID_ARRAY_1(countries))
+    self.countries = forced ? nil : [Storage loadObjectWithkey:kKMLStorageDataKey];
+
+    if (VALID_ARRAY_1(self.countries))
         IN_MAINTHREAD(^{
             LOG(@"loaded");
-            
+
             if (callback)
                 callback(nil);
         });
-    
+
     else
         [self _parseData:callback];
 }
@@ -100,7 +100,7 @@
 
 - (void)loadDataForced:(BOOL)forced callback:(KMLCallback)callback {
     LOG(@"loadDataForced: %@", SBOOL(forced));
-    
+
     IN_BACKGROUNG(^{
         [self _loadDataForced:forced callback:callback];
     });
@@ -109,28 +109,21 @@
 
 #pragma mark - KMLParserDelegate
 
-- (void)parser:(nonnull KMLParser *)parser didFindCountry:(nonnull KMLCountry *)country {
-    [countries addObject:country];
-}
-
-
-#pragma mark - Getters & Setters
-
-- (NSArray<KMLCountry *> *)countries {
-    return countries;
+- (void)parser:(KMLParser *)parser didFindCountry:(KMLCountry *)country {
+    self.countries = [self.countries arrayByAddingObject:country];
 }
 
 
 #pragma mark - Singleton
 
 + (instancetype)sharedKML {
-    static KML * sharedKML  = nil;
+    static KML * sharedKML = nil;
     static dispatch_once_t onceToken;
-    
+
     dispatch_once(&onceToken, ^{
-        sharedKML               = [[KML alloc] init];
+        sharedKML = [[self.class alloc] init];
     });
-    
+
     return sharedKML;
 }
 

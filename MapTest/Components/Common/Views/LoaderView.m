@@ -32,7 +32,7 @@
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder]))
         [self subInit];
-    
+
     return self;
 }
 
@@ -40,21 +40,21 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame]))
         [self subInit];
-    
+
     return self;
 }
 
 
 - (void)subInit {
-    self.backgroundColor        = [[UIColor whiteColor] colorWithAlphaComponent:0.95f];
-    self.titleLabel.text        = nil;
+    self.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:0.95f];
+    self.titleLabel.text = nil;
 }
 
 
 #pragma mark - Getters & Setters
 
 - (void)setTitle:(NSString *)title {
-    self.titleLabel.text        = title;
+    self.titleLabel.text = title;
 }
 
 

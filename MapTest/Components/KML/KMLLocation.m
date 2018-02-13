@@ -28,10 +28,10 @@
 #pragma mark - Static Methods
 
 + (instancetype)loactionWithLatitude:(double)latitude andLongitude:(double)longitude {
-    __autoreleasing KMLLocation * location  = [[KMLLocation alloc] init];
+    __autoreleasing KMLLocation * location = [[self.class alloc] init];
 
-    location.latitude       = latitude;
-    location.longitude      = longitude;
+    location.latitude = latitude;
+    location.longitude = longitude;
 
     return location;
 }
@@ -44,7 +44,7 @@
         DECODE_DOUBLE(latitude);
         DECODE_DOUBLE(longitude);
     }
-    
+
     return self;
 }
 

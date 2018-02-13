@@ -27,15 +27,15 @@
 
 + (BOOL)coordinates:(CLLocationCoordinate2D)coordinates inPolygon:(KMLPolygon *)polygon {
     /* Build the Polygon and detect are the coordinates belong to this Polygon */
-    CGMutablePathRef path   = CGPathCreateMutable();
+    CGMutablePathRef path = CGPathCreateMutable();
 
-    BOOL firstOne           = YES;
+    BOOL firstOne = YES;
 
     for (KMLLocation * location in polygon.locations) {
         if (firstOne) {
             CGPathMoveToPoint(path, NULL, location.latitude, location.longitude);
 
-            firstOne                = NO;
+            firstOne = NO;
         }
         else
             CGPathAddLineToPoint(path, NULL, location.latitude, location.longitude);
@@ -43,7 +43,7 @@
 
     CGPathCloseSubpath(path);
 
-    BOOL result             = CGPathContainsPoint(path, NULL, CGPointMake(coordinates.latitude, coordinates.longitude), YES);
+    BOOL result = CGPathContainsPoint(path, NULL, CGPointMake(coordinates.latitude, coordinates.longitude), YES);
 
     CGPathRelease(path);
 
@@ -70,12 +70,12 @@
     if (!VALID_ARRAY_1(countries) || !CLLocationCoordinate2DIsValid(coordinates))
         return nil;
 
-    NSMutableArray * roughMatches   = [NSMutableArray array];
+    NSMutableArray * roughMatches = NSMutableArray.array;
 
     /* Check that coordinates belong to bounding box */
     for (KMLCountry * country in countries) {
         for (KMLPolygon * polygon in country.polygons) {
-            KMLRect frame                   = polygon.frame;
+            KMLRect frame = polygon.frame;
 
             if (coordinates.latitude < frame.origin.x || coordinates.latitude > (frame.origin.x + frame.size.width))
                 continue;
@@ -90,7 +90,7 @@
     if (!VALID_ARRAY_1(roughMatches))
         return nil;
 
-   KMLMatch * result               = [KMLMatcher _matchCoordinates:coordinates withRoughMatches:roughMatches];
+   KMLMatch * result = [KMLMatcher _matchCoordinates:coordinates withRoughMatches:roughMatches];
 
     if (!result && roughMatches.count > 0)
         return [KMLMatch matchWithCountry:((KMLPolygon *)roughMatches.firstObject).country andAccuracy:KMLMatchAccuracyRough];

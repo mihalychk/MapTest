@@ -28,7 +28,7 @@
 #pragma mark -
 
 - (void)_presentPopupWithStyle:(UIAlertControllerStyle)style title:(NSString *)title message:(NSString *)message andActions:(NSArray<UIAlertAction *> *)actions animated:(BOOL)animated {
-    UIAlertController * controller              = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:style];
+    UIAlertController * controller = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:style];
     
     for (UIAlertAction * action in actions)
         [controller addAction:action];
@@ -36,7 +36,7 @@
     [controller setModalPresentationStyle:UIModalPresentationPopover];
     
     UIPopoverPresentationController * presenter = controller.popoverPresentationController;
-    presenter.barButtonItem                     = self.navigationItem.rightBarButtonItem;
+    presenter.barButtonItem = self.navigationItem.rightBarButtonItem;
     
     [self presentViewController:controller animated:animated completion:nil];
 }
@@ -65,7 +65,7 @@
 
 
 - (void)presentConfirmationWithMessage:(nullable NSString *)message buttonTitle:(nullable NSString *)buttonTitle cancelHandler:(void(^__nullable)(UIAlertAction * _Nonnull action))cancelHandler yesHandler:(void(^__nullable)(UIAlertAction * _Nonnull action))yesHandler animated:(BOOL)animated {
-    NSMutableArray * actions        = [NSMutableArray array];
+    NSMutableArray * actions = NSMutableArray.array;
     
     [actions addObject:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:cancelHandler]];
     [actions addObject:[UIAlertAction actionWithTitle:buttonTitle style:UIAlertActionStyleDefault handler:yesHandler]];
@@ -75,12 +75,12 @@
 
 
 - (void)loader:(BOOL)show animated:(BOOL)animated {
-    [(AppDelegate *)[UIApplication sharedApplication].delegate loader:show animated:animated];
+    [(AppDelegate *)UIApplication.sharedApplication.delegate loader:show animated:animated];
 }
 
 
 - (void)setLoaderTitle:(nullable NSString *)title {
-    [(AppDelegate *)[UIApplication sharedApplication].delegate setLoaderTitle:title];
+    [(AppDelegate *)UIApplication.sharedApplication.delegate setLoaderTitle:title];
 }
 
 
@@ -90,7 +90,7 @@
     [super viewDidLoad];
 
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
-        self.edgesForExtendedLayout     = UIRectEdgeNone;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
 }
 
 

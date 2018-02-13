@@ -16,23 +16,23 @@
 
 
 KMLPoint KMLPointMake(double x, double y) {
-    KMLPoint point      = {0.0f, 0.0f};
-    
-    point.x             = x;
-    point.y             = y;
-    
+    KMLPoint point = { 0.0f, 0.0f };
+
+    point.x = x;
+    point.y = y;
+
     return point;
 }
 
 
 KMLRect KMLRectMake(double x, double y, double width, double height) {
-    KMLRect rect        = {0.0f, 0.0f, 0.0f, 0.0f};
-    
-    rect.origin.x       = x;
-    rect.origin.y       = y;
-    rect.size.width     = width;
-    rect.size.height    = height;
-    
+    KMLRect rect = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+    rect.origin.x = x;
+    rect.origin.y = y;
+    rect.size.width = width;
+    rect.size.height = height;
+
     return rect;
 }
 

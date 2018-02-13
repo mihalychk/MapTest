@@ -14,7 +14,7 @@
 
 
 
-typedef void(^ _Nullable KMLCallback)(NSError * _Nullable error);
+typedef void(^KMLCallback)(NSError * _Nullable error);
 
 @class KMLCountry;
 
@@ -40,6 +40,6 @@ typedef void(^ _Nullable KMLCallback)(NSError * _Nullable error);
  * Loads data from Storage, if it is not there parses .kml file.
  * Callback will return in Main Thread.
  */
-- (void)loadDataForced:(BOOL)forced callback:(KMLCallback)callback;
+- (void)loadDataForced:(BOOL)forced callback:(nullable KMLCallback)callback;
 
 @end

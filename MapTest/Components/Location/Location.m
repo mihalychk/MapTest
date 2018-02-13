@@ -20,12 +20,11 @@
 
 
 
-@interface Location () <CLLocationManagerDelegate> {
-    __strong CLLocationManager * manager;
-    __strong NSTimer * timer;
-}
+@interface Location () <CLLocationManagerDelegate>
 
-@property (nonatomic, nullable, copy) LocationBlock callback;
+@property (nonatomic, strong) CLLocationManager * manager;
+@property (nonatomic, strong) NSTimer * timer;
+@property (nonatomic, copy) LocationBlock callback;
 
 - (void)start;
 - (void)stop;
@@ -41,11 +40,11 @@
 
 #pragma mark - init & dealloc
 
-- (id)init {
+- (instancetype)init {
     if ((self = [super init])) {
         LOG(@"created");
         
-        timer               = [NSTimer scheduledTimerWithTimeInterval:LOCATION_TIMEOUT target:self selector:@selector(onTimer:) userInfo:nil repeats:NO];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:LOCATION_TIMEOUT target:self selector:@selector(onTimer:) userInfo:nil repeats:NO];
     }
     
     return self;
@@ -61,9 +60,9 @@
 
 #pragma mark - Static Methods
 
-+ (nonnull instancetype)locationWithBlock:(LocationBlock)callback {
++ (instancetype)locationWithBlock:(LocationBlock)callback {
     __autoreleasing Location * location = [[Location alloc] init];
-    location.callback                   = callback;
+    location.callback = callback;
     
     [location start];
     
@@ -74,39 +73,39 @@
 #pragma mark - Handles
 
 - (void)start {
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied) {
-        if (nil == manager)
-            manager                     = [[CLLocationManager alloc] init];
+    if (CLLocationManager.locationServicesEnabled && CLLocationManager.authorizationStatus != kCLAuthorizationStatusDenied) {
+        if (!self.manager)
+            self.manager = [[CLLocationManager alloc] init];
+
+        if (CLLocationManager.authorizationStatus == kCLAuthorizationStatusNotDetermined)
+            [self.manager requestWhenInUseAuthorization];
         
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
-            [manager requestWhenInUseAuthorization];
+        self.manager.delegate = self;
+        self.manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+        self.manager.distanceFilter = 500; // meters
         
-        manager.delegate            = self;
-        manager.desiredAccuracy     = kCLLocationAccuracyNearestTenMeters;
-        manager.distanceFilter      = 500; // meters
-        
-        [manager startUpdatingLocation];
+        [self.manager startUpdatingLocation];
         
         return;
     }
-    
+
     LOG(@"not available");
-    
+
     [self callback:LocationStatusNotAllowed location:kCLLocationCoordinate2DInvalid];
 }
 
 
 - (void)stop {
-    if (manager) {
-        [manager stopUpdatingLocation];
+    if (self.manager) {
+        [self.manager stopUpdatingLocation];
         
-        manager         = nil;
+        self.manager = nil;
     }
     
-    if (timer) {
-        [timer invalidate];
+    if (self.timer) {
+        [self.timer invalidate];
         
-        timer           = nil;
+        self.timer = nil;
     }
 }
 
@@ -133,9 +132,9 @@
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    CLLocation * location       = [locations lastObject];
-    NSDate * eventDate          = location.timestamp;
-    NSTimeInterval howRecent    = [eventDate timeIntervalSinceNow];
+    CLLocation * location = locations.lastObject;
+    NSDate * eventDate = location.timestamp;
+    NSTimeInterval howRecent = eventDate.timeIntervalSinceNow;
     
     if (fabs(howRecent) < 15.0f) {
         LOG(@"got data");
@@ -151,7 +150,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     LOG(@"error: %@", error);
-    
+
     [self callback:LocationStatusError location:kCLLocationCoordinate2DInvalid];
 }
 
