@@ -32,7 +32,7 @@
 - (void)setUp {
     [super setUp];
 
-    self.polygon            = [KMLPolygon polygon];
+    self.polygon = KMLPolygon.polygon;
 }
 
 
@@ -41,7 +41,7 @@
 
     XCTAssertTrue(self.polygon.locations.count == 3, @"Wrong Locations count");
 
-    KMLLocation * location  = self.polygon.locations[1];
+    KMLLocation * location = self.polygon.locations[1];
     
     XCTAssertTrue(location.latitude == 0.1234, @"Wrong Location latitude");
     XCTAssertTrue(location.longitude == 7.89, @"Wrong Location longitude");

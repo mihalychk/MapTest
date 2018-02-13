@@ -42,17 +42,17 @@
 
 - (void)onRefresh:(UIBarButtonItem *)sender {
     NSMutableArray * actions = NSMutableArray.array;
-    
-    [actions addObject:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rebuild Map", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+    [actions addObject:[UIAlertAction actionWithTitle:NSLocalizedString(@"Rebuild Map", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         [self updateDataForced:YES];
     }]];
-    
-    [actions addObject:[UIAlertAction actionWithTitle:NSLocalizedString(@"Update Location", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+    [actions addObject:[UIAlertAction actionWithTitle:NSLocalizedString(@"Update Location", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         self.locationLabel.text = NSLocalizedString(@"Getting your location...", nil);
 
         [self obtainLocation];
     }]];
-    
+
     [actions addObject:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
 
     [self presentSheetWithTitle:nil message:nil andActions:actions animated:YES];
@@ -72,12 +72,12 @@
     switch (self.match.accuracy) {
         case KMLMatchAccuracyRough:
             self.locationLabel.text = FORMAT(@"%@\n%@", NSLocalizedString(@"You are probably in", nil), self.match.country.name);
-            
+
             break;
 
         case KMLMatchAccuracyAccurate:
             self.locationLabel.text = FORMAT(@"%@\n%@", NSLocalizedString(@"You are in", nil), self.match.country.name);
-            
+
             break;
 
         default:

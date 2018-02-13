@@ -44,12 +44,12 @@
 
 #pragma mark Public Methods
 
-- (void)presentSheetWithTitle:(nullable NSString *)title message:(nullable NSString *)message andActions:(nullable NSArray<UIAlertAction *> *)actions animated:(BOOL)animated {
+- (void)presentSheetWithTitle:(NSString *)title message:(NSString *)message andActions:(NSArray<UIAlertAction *> *)actions animated:(BOOL)animated {
     [self _presentPopupWithStyle:UIAlertControllerStyleActionSheet title:title message:message andActions:actions animated:animated];
 }
 
 
-- (void)presentAlertWithTitle:(nullable NSString *)title message:(nullable NSString *)message andActions:(nullable NSArray<UIAlertAction *> *)actions animated:(BOOL)animated {
+- (void)presentAlertWithTitle:(NSString *)title message:(NSString *)message andActions:(NSArray<UIAlertAction *> *)actions animated:(BOOL)animated {
     [self _presentPopupWithStyle:UIAlertControllerStyleAlert title:title message:message andActions:actions animated:animated];
 }
 

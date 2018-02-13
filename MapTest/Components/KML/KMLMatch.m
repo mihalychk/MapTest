@@ -21,7 +21,7 @@
 
 #pragma mark - Static Methods
 
-+ (nonnull instancetype)matchWithCountry:(nullable KMLCountry *)country andAccuracy:(KMLMatchAccuracy)accuracy {
++ (instancetype)matchWithCountry:(KMLCountry *)country andAccuracy:(KMLMatchAccuracy)accuracy {
     __autoreleasing KMLMatch * match = [[self.class alloc] init];
 
     match.country = country;

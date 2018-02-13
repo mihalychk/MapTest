@@ -43,17 +43,17 @@
 - (instancetype)init {
     if ((self = [super init])) {
         LOG(@"created");
-        
+    
         self.timer = [NSTimer scheduledTimerWithTimeInterval:LOCATION_TIMEOUT target:self selector:@selector(onTimer:) userInfo:nil repeats:NO];
     }
-    
+
     return self;
 }
 
 
 - (void)dealloc {
     [self stop];
-    
+
     LOG(@"dead");
 }
 
@@ -63,9 +63,9 @@
 + (instancetype)locationWithBlock:(LocationBlock)callback {
     __autoreleasing Location * location = [[Location alloc] init];
     location.callback = callback;
-    
+
     [location start];
-    
+
     return location;
 }
 
@@ -79,13 +79,13 @@
 
         if (CLLocationManager.authorizationStatus == kCLAuthorizationStatusNotDetermined)
             [self.manager requestWhenInUseAuthorization];
-        
+
         self.manager.delegate = self;
         self.manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
         self.manager.distanceFilter = 500; // meters
-        
+
         [self.manager startUpdatingLocation];
-        
+
         return;
     }
 
@@ -98,13 +98,13 @@
 - (void)stop {
     if (self.manager) {
         [self.manager stopUpdatingLocation];
-        
+
         self.manager = nil;
     }
-    
+
     if (self.timer) {
         [self.timer invalidate];
-        
+
         self.timer = nil;
     }
 }
@@ -114,7 +114,7 @@
 
 - (void)onTimer:(NSTimer *)_timer {
     LOG(@"timeout");
-    
+
     [self callback:LocationStatusError location:kCLLocationCoordinate2DInvalid];
 }
 
@@ -124,7 +124,7 @@
         if (self.callback)
             self.callback(status, location);
     });
-    
+
     [self stop];
 }
 
@@ -135,13 +135,13 @@
     CLLocation * location = locations.lastObject;
     NSDate * eventDate = location.timestamp;
     NSTimeInterval howRecent = eventDate.timeIntervalSinceNow;
-    
+
     if (fabs(howRecent) < 15.0f) {
         LOG(@"got data");
-        
+
         if (CLLocationCoordinate2DIsValid(location.coordinate))
             [self callback:LocationStatusOK location:location.coordinate];
-        
+
         else
             [self callback:LocationStatusError location:kCLLocationCoordinate2DInvalid];
     }

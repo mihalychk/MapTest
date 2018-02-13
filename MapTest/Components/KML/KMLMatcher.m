@@ -64,7 +64,7 @@
 
 #pragma mark - Static Methods
 
-+ (nullable KMLMatch *)matchCoordinates:(CLLocationCoordinate2D)coordinates inCountries:(NSArray<KMLCountry *> *)countries {
++ (KMLMatch *)matchCoordinates:(CLLocationCoordinate2D)coordinates inCountries:(NSArray<KMLCountry *> *)countries {
     LOG(@"matchCoordinates: { latitude = %.10f, longitude = %.10f }", coordinates.latitude, coordinates.longitude);
 
     if (!VALID_ARRAY_1(countries) || !CLLocationCoordinate2DIsValid(coordinates))
